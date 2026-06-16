@@ -22,7 +22,7 @@ export default async function handler(req) {
     }
 
     let msgs;
-    try { msgs = JSON.parse(octaText); } catch(e) {
+    try { msgs = JSON.parse(octaText); } catch (e) {
       return new Response(JSON.stringify({ error: `JSON inválido: ${octaText.substring(0, 200)}` }), { status: 502, headers: corsHeaders });
     }
 
@@ -48,7 +48,13 @@ export default async function handler(req) {
       }),
     });
 
-    const claudeData = await claudeRes.json();
+    const claudeText = await claudeRes.text();
+
+    if (!claudeRes.ok) {
+      return new Response(JSON.stringify({ error: `Anthropic ${claudeRes.status}: ${claudeText.substring(0, 300)}` }), { status: 502, headers: corsHeaders });
+    }
+
+    const claudeData = JSON.parse(claudeText);
     const raw = claudeData.content?.find(b => b.type === 'text')?.text || '';
     const resultado = JSON.parse(raw.replace(/```json|```/g, '').trim());
 
