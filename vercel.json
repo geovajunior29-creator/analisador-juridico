@@ -1,7 +1,18 @@
 {
   "version": 2,
+  "functions": {
+    "api/analisar.js": {
+      "maxDuration": 30
+    }
+  },
   "routes": [
-    { "src": "/api/analisar", "dest": "/analisar.js" },
-    { "src": "/(.*)", "dest": "/index.html" }
+    {
+      "src": "/api/analisar",
+      "dest": "/api/analisar.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
   ]
 }
